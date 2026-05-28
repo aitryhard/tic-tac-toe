@@ -155,7 +155,6 @@ button.danger:active { opacity: 0.9; }
     padding: 4px 7px; border-radius: 4px;
     background: transparent; border: 1px solid var(--border);
     color: var(--text-muted); cursor: pointer;
-    transition: color 0.15s, border-color 0.15s;
     line-height: 1;
 }
 .lang-btn:hover { color: var(--blue); border-color: var(--blue); }
