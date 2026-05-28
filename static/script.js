@@ -206,7 +206,10 @@ function handleMessage(msg) {
             break;
         case 'game_state':
             renderBoard(msg.state, true);
-            if (msg.state.winner) { setStatus(`${msg.state.winner} ` + t('wins')); gameActive = false; confetti(); }
+            if (msg.state.winner) {
+                setStatus(`${msg.state.winner} ` + t('wins')); gameActive = false;
+                if (msg.state.winner === player) confetti();
+            }
             else if (msg.state.draw) { setStatus(t('draw')); gameActive = false; }
             else {
                 const myTurn = msg.state.current_turn === player;
