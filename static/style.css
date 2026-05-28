@@ -1,25 +1,25 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-    --bg: #ffffff;
-    --bg-secondary: #fafafa;
-    --text: #1e293b;
-    --text-secondary: #475569;
-    --text-muted: #64748b;
-    --border: #d1d5db;
-    --border-light: #e2e8f0;
-    --board-bg: #e2e8f0;
-    --board-border: #cbd5e1;
+    --bg: #f8f7f4;
+    --bg-secondary: #ffffff;
+    --text: #2c2c2c;
+    --text-secondary: #5a5a5a;
+    --text-muted: #8a8a8a;
+    --border: #d8d4d0;
+    --border-light: #e8e4e0;
+    --board-bg: #e0dcd8;
+    --board-border: #d0ccc8;
     --cell-bg: #ffffff;
-    --cell-hover: #f8fafc;
-    --label-bg: #f1f5f9;
-    --blue: #3b82f6;
-    --blue-hover: #2563eb;
-    --red: #ef4444;
-    --red-hover: #dc2626;
-    --green: #22c55e;
-    --win-bg: #f0fdf4;
-    --shadow: 0 1px 4px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.02);
+    --cell-hover: #f5f3f0;
+    --label-bg: #f0eee8;
+    --blue: #4f8ff7;
+    --blue-hover: #3a7ae0;
+    --red: #e85858;
+    --red-hover: #d04444;
+    --green: #3bc86b;
+    --win-bg: #f0faf0;
+    --shadow: 0 1px 6px rgba(0,0,0,0.06), 0 4px 20px rgba(0,0,0,0.03);
 }
 
 [data-theme="dark"] {
@@ -122,27 +122,8 @@ button.danger:hover { background: var(--red-hover); border-color: var(--red-hove
 #menu button.primary { width: 200px; text-align: center; padding: 10px 20px; }
 #menu .theme-btn { width: auto; margin-top: 4px; }
 
-#join-section { display: flex; gap: 6px; margin-top: 8px; width: 200px; }
-
-#room-code-input {
-    flex: 1;
-    font-size: 0.875rem;
-    padding: 8px 12px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    background: var(--cell-bg);
-    color: var(--text);
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    text-align: center;
-    font-weight: 600;
-    font-family: inherit;
-    transition: background 0.3s, color 0.3s, border-color 0.15s;
-}
-#room-code-input:focus { border-color: var(--blue); outline: none; box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
-#room-code-input::placeholder { letter-spacing: 0; font-weight: 400; text-transform: none; color: var(--text-muted); }
-
-#join-section button.primary { width: auto; }
+#join-section { display: flex; gap: 6px; margin-top: 8px; width: 100%; }
+#join-section button.primary { flex-shrink: 0; }
 
 #game { display: flex; flex-direction: column; align-items: center; gap: 14px; }
 
