@@ -135,11 +135,18 @@ button.danger:active { opacity: 0.9; }
     display: flex; align-items: center; justify-content: center;
     cursor: pointer;
     color: var(--text-muted);
+    position: relative;
     transition: none;
 }
 .theme-btn:hover { box-shadow: none; transform: none; color: var(--blue); }
 .theme-btn:active { box-shadow: none; transform: none; }
-.theme-btn svg { display: block; }
+.theme-btn svg { position: absolute; display: block; transition: opacity 0.15s; }
+
+.theme-btn .icon-sun { opacity: 1; }
+.theme-btn .icon-moon { opacity: 0; }
+
+[data-theme="dark"] .theme-btn .icon-sun { opacity: 0; }
+[data-theme="dark"] .theme-btn .icon-moon { opacity: 1; }
 
 .theme-btn.spin { animation: themeSpin 0.5s ease-out !important; }
 
@@ -161,7 +168,7 @@ button.danger:active { opacity: 0.9; }
     transition: background 0.3s, box-shadow 0.3s;
 }
 
-#menu h1 { margin-bottom: 4px; }
+#menu h1 { margin-bottom: 0; }
 #menu button.primary { width: 200px; padding: 10px 20px; }
 #menu button.primary:hover, #menu button.primary.btn-hover { box-shadow: 0 4px 16px rgba(79,143,247,0.4); transform: translateY(-2px); }
 #menu button.primary:active, #menu button.primary.btn-active { box-shadow: 0 1px 4px rgba(79,143,247,0.2); transform: translateY(0); }
