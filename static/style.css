@@ -126,10 +126,36 @@ button.danger {
 }
 button.danger:active { opacity: 0.9; }
 
-.theme-btn { font-size: 0.85rem; padding: 5px 9px; line-height: 1; border-radius: 6px; background: transparent; border-color: transparent; box-shadow: none; font-weight: 700; color: var(--text-muted); }
-.theme-btn:hover { box-shadow: none; transform: none; color: var(--blue); }
+.theme-btn {
+    width: 30px; height: 30px; padding: 0;
+    border-radius: 6px;
+    background: transparent;
+    border: 1px solid transparent;
+    box-shadow: none;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: none;
+}
+.theme-btn:hover { box-shadow: none; transform: none; }
 .theme-btn:active { box-shadow: none; transform: none; }
+
+.theme-btn::before {
+    content: '';
+    display: block;
+    width: 13px; height: 13px;
+    border-radius: 50%;
+    border: 1.5px solid var(--text-muted);
+    background: transparent;
+    transition: background 0.2s, border-color 0.2s;
+}
+.theme-btn:hover::before { border-color: var(--blue); }
+
+[data-theme="dark"] .theme-btn::before {
+    background: var(--text-muted);
+}
+
 #menu .theme-btn.spin { animation: themeSpin 0.5s ease-out; }
+#menu .theme-btn.spin::before { transition: none; }
 
 @keyframes themeSpin {
     0% { transform: rotate(0deg); }
@@ -153,7 +179,7 @@ button.danger:active { opacity: 0.9; }
 #menu button.primary { width: 200px; padding: 10px 20px; }
 #menu button.primary:hover, #menu button.primary.btn-hover { box-shadow: 0 4px 16px rgba(79,143,247,0.4); transform: translateY(-2px); }
 #menu button.primary:active, #menu button.primary.btn-active { box-shadow: 0 1px 4px rgba(79,143,247,0.2); transform: translateY(0); }
-#menu .theme-btn { width: auto; margin-top: 4px; }
+#menu .theme-btn { margin-top: 4px; }
 
 #join-section { display: flex; gap: 6px; margin-top: 8px; width: 200px; }
 #join-section button.primary {

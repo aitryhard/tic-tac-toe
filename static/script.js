@@ -52,22 +52,21 @@ cells.forEach(cell => {
 function applyTheme() {
     if (darkTheme) {
         document.documentElement.setAttribute('data-theme', 'dark');
-        document.querySelectorAll('.theme-btn').forEach(b => b.textContent = 'L');
     } else {
         document.documentElement.removeAttribute('data-theme');
-        document.querySelectorAll('.theme-btn').forEach(b => b.textContent = 'D');
     }
     localStorage.setItem('theme', darkTheme ? 'dark' : 'light');
 }
 
 function toggleTheme() {
-    darkTheme = !darkTheme;
-    document.querySelectorAll('.theme-btn').forEach(btn => {
-        btn.classList.add('spin');
-        setTimeout(() => { btn.textContent = darkTheme ? 'L' : 'D'; }, 150);
-        setTimeout(() => { btn.classList.remove('spin'); }, 500);
-    });
-    applyTheme();
+    document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.add('spin'));
+    setTimeout(() => {
+        darkTheme = !darkTheme;
+        applyTheme();
+    }, 250);
+    setTimeout(() => {
+        document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('spin'));
+    }, 500);
 }
 
 async function createRoom(vsAi) {
