@@ -354,8 +354,8 @@ button.danger:active { opacity: 0.9; }
 
 /* menu animation */
 @keyframes fadeSlide {
-    0% { opacity: 0; transform: translateY(-12px); }
-    100% { opacity: 1; transform: translateY(0); }
+    0% { opacity: 0; }
+    100% { opacity: 1; }
 }
 #menu { animation: fadeSlide 0.4s ease-out; }
 #menu > * { animation: fadeSlide 0.4s ease-out both; }
