@@ -12,11 +12,6 @@
             <h1 class="title" id="title"></h1>
             <button id="btn-vs-player" class="primary"></button>
             <button id="btn-vs-ai" class="primary"></button>
-            <div class="difficulty-row" style="display:none">
-                <button class="diff-btn" data-d="0">Easy</button>
-                <button class="diff-btn active" data-d="1">Medium</button>
-                <button class="diff-btn" data-d="2">Hard</button>
-            </div>
             <div id="join-section">
                 <input id="room-code-input" placeholder="" maxlength="6">
                 <button id="btn-join" class="primary"></button>
@@ -46,6 +41,7 @@
                 </button>
                 <button id="btn-lang-game" class="lang-btn"></button>
             </div>
+            <div id="timer-bar"><div id="timer-fill"></div></div>
             <div id="board">
                 <div class="cell" data-i="0">
                     <svg class="mark x" viewBox="0 0 100 100"><line x1="18" y1="18" x2="82" y2="82"/><line x1="82" y1="18" x2="18" y2="82"/></svg>

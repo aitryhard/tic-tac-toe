@@ -114,6 +114,45 @@ function soundCopy() { beep(1200, 0.06, 'sine', 0.04); setTimeout(() => beep(160
 function soundDraw() { beep(440, 0.15, 'triangle', 0.06); }
 function soundLose() { beep(300, 0.15, 'sawtooth', 0.04); setTimeout(() => beep(220, 0.2, 'sawtooth', 0.04), 150); }
 
+// Timer
+const timerBar = document.getElementById('timer-bar');
+const timerFill = document.getElementById('timer-fill');
+let timerInterval = null;
+let timerLeft = 0;
+const TIMER_SEC = 10;
+
+function startTimer() {
+    clearTimer();
+    timerLeft = TIMER_SEC;
+    timerBar.style.opacity = '1';
+    timerFill.style.width = '100%';
+    timerFill.classList.remove('low');
+    timerInterval = setInterval(() => {
+        timerLeft -= 0.05;
+        const pct = Math.max(0, timerLeft / TIMER_SEC * 100);
+        timerFill.style.width = pct + '%';
+        if (timerLeft <= 3) timerFill.classList.add('low');
+        if (timerLeft <= 0) {
+            clearTimer();
+            if (!gameActive) return;
+            gameActive = false;
+            if (vsAI) {
+                setStatus(t('yourTurn') === t('yourTurn') ? 'Time\'s up! AI wins!' : 'Время вышло! ИИ победил!');
+                soundLose();
+            } else {
+                const opponent = player === 'X' ? 'O' : 'X';
+                setStatus(`${player} - time's up! ${opponent} wins!`);
+                soundLose();
+            }
+        }
+    }, 50);
+}
+
+function clearTimer() {
+    if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+    timerBar.style.opacity = '0';
+}
+
 function setTitle() {
     const title = document.getElementById('title');
     const text = t('title');
@@ -156,7 +195,6 @@ let vsAI = false;
 let gameActive = false;
 let prevBoard = Array(9).fill(null);
 let darkTheme = localStorage.getItem('theme') === 'dark';
-let difficulty = 1; // 0=easy, 1=medium, 2=hard
 
 const menu = document.getElementById('menu');
 const gameDiv = document.getElementById('game');
@@ -195,24 +233,6 @@ applyTheme();
 
 document.querySelectorAll('.lang-btn').forEach(btn => btn.onclick = toggleLang);
 applyLang();
-
-// Difficulty selector
-const diffRow = document.querySelector('.difficulty-row');
-const diffBtns = document.querySelectorAll('.diff-btn');
-diffBtns.forEach(btn => btn.onclick = () => {
-    difficulty = parseInt(btn.dataset.d);
-    diffBtns.forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-});
-// Show difficulty row after Play vs AI
-const btnAI = document.getElementById('btn-vs-ai');
-btnAI.onmouseenter = () => { diffRow.style.display = 'flex'; };
-diffRow.onmouseleave = (e) => {
-    if (!e.relatedTarget || !e.relatedTarget.closest('.difficulty-row, #btn-vs-ai')) {
-        diffRow.style.display = 'none';
-    }
-};
-diffRow.onmouseenter = () => { diffRow.style.display = 'flex'; };
 
 // Share button
 document.getElementById('btn-share').onclick = () => {
@@ -267,7 +287,7 @@ async function createRoom(vsAi) {
         const res = await fetch('/api/room', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ vs_ai: vsAi, difficulty }),
+            body: JSON.stringify({ vs_ai: vsAi }),
         });
         const data = await res.json();
         if (data.code) { roomCode = data.code; vsAI = vsAi; connect(); }
@@ -302,19 +322,22 @@ function handleMessage(msg) {
             prevBoard = [...msg.state.board];
             renderBoard(msg.state, false);
             gameActive = !vsAI || player === 'X';
+            if (gameActive) startTimer();
             setStatus(vsAI ? (player === 'X' ? t('yourTurn') : t('aiThinking')) : 'X' + t('turn'));
             break;
         case 'game_state':
             renderBoard(msg.state, true);
             if (msg.state.winner) {
                 setStatus(`${msg.state.winner} ` + t('wins')); gameActive = false;
+                clearTimer();
                 if (msg.state.winner === player) { confetti(); soundWin(); }
                 else { soundLose(); }
             }
-            else if (msg.state.draw) { setStatus(t('draw')); gameActive = false; soundDraw(); }
+            else if (msg.state.draw) { setStatus(t('draw')); gameActive = false; soundDraw(); clearTimer(); }
             else {
                 const myTurn = msg.state.current_turn === player;
                 gameActive = vsAI ? (myTurn && player !== 'spectator') : player !== 'spectator';
+                if (gameActive) startTimer(); else clearTimer();
                 setStatus(vsAI ? (myTurn ? t('yourTurn') : t('aiThinking')) : msg.state.current_turn + t('turn'));
             }
             break;
@@ -349,6 +372,7 @@ function leave() {
     gameDiv.style.display = 'none';
     menu.style.display = 'flex';
     player = null; roomCode = null; gameActive = false;
+    clearTimer();
     prevBoard = Array(9).fill(null);
     cells.forEach(c => { c.className = 'cell'; });
 }

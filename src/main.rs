@@ -74,15 +74,14 @@ async fn create_room(
 ) -> Json<Value> {
     let parsed: Value = serde_json::from_str(&body).unwrap_or(json!({}));
     let vs_ai = parsed.get("vs_ai").and_then(|b| b.as_bool()).unwrap_or(false);
-    let difficulty = parsed.get("difficulty").and_then(|d| d.as_i64()).unwrap_or(1) as i32;
 
     let mut mgr = room_mgr.write().await;
     mgr.clean_old_rooms();
-    let code = mgr.create_room(vs_ai, difficulty);
+    let code = mgr.create_room(vs_ai);
 
     let (tx, _) = broadcast::channel(32);
     let game_room = GameRoom {
-        game: Game::new(vs_ai, difficulty),
+        game: Game::new(vs_ai),
         players: HashMap::new(),
         tx,
     };

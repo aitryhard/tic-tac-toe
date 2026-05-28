@@ -433,16 +433,22 @@ button.danger:active { opacity: 0.9; }
     100% { transform: translateY(105vh) rotateZ(600deg); opacity: 0; }
 }
 
-/* difficulty selector */
-.difficulty-row { display: flex; gap: 4px; }
-.diff-btn {
-    font-size: 0.7rem; padding: 3px 8px;
-    border: 1px solid var(--border); border-radius: 4px;
-    background: transparent; color: var(--text-muted); cursor: pointer;
-    transition: all 0.15s; font-weight: 500;
+/* timer */
+#timer-bar {
+    width: 340px; height: 4px;
+    background: var(--cell-hover);
+    border-radius: 2px;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 0.2s;
 }
-.diff-btn:hover { color: var(--blue); border-color: var(--blue); }
-.diff-btn.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+#timer-fill {
+    height: 100%; width: 100%;
+    background: var(--blue);
+    border-radius: 2px;
+    transition: width 0.1s linear;
+}
+#timer-fill.low { background: var(--red); }
 
 /* share button */
 .share-btn {
