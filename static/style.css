@@ -1,0 +1,172 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: #ffffff;
+    color: #1e293b;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 24px;
+}
+
+h1 { font-size: 1.75rem; font-weight: 700; color: #0f172a; letter-spacing: -0.5px; }
+
+button {
+    font-size: 0.875rem;
+    padding: 8px 20px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    cursor: pointer;
+    background: #ffffff;
+    color: #1e293b;
+    font-weight: 500;
+    transition: all 0.12s;
+    user-select: none;
+}
+button:hover { background: #f8fafc; border-color: #94a3b8; }
+button:active { background: #f1f5f9; }
+
+#menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 40px 48px;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.02);
+}
+
+#menu h1 { margin-bottom: 4px; }
+#menu button { width: 200px; text-align: center; padding: 10px 20px; }
+
+#join-section { display: flex; gap: 6px; margin-top: 8px; width: 200px; }
+
+#room-code-input {
+    flex: 1;
+    font-size: 0.875rem;
+    padding: 8px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #1e293b;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-align: center;
+    font-weight: 600;
+    font-family: inherit;
+}
+#room-code-input:focus { border-color: #3b82f6; outline: none; box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
+#room-code-input::placeholder { letter-spacing: 0; font-weight: 400; text-transform: none; }
+
+#join-section button { width: auto; }
+
+#game { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+
+#header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 360px;
+}
+
+#room-label {
+    font-size: 0.75rem; color: #64748b; background: #f1f5f9;
+    padding: 3px 10px; border-radius: 4px; font-weight: 600; letter-spacing: 0.5px;
+}
+
+#status {
+    flex: 1; text-align: center; font-size: 0.9rem; font-weight: 600; color: #475569; white-space: nowrap;
+}
+
+#header button { font-size: 0.8rem; padding: 5px 12px; }
+
+#board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3px;
+    width: 340px;
+    height: 340px;
+    background: #e2e8f0;
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
+    padding: 3px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+
+.cell {
+    position: relative;
+    background: #ffffff;
+    cursor: pointer;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.12s;
+    aspect-ratio: 1;
+}
+.cell:hover { background: #f8fafc; }
+.cell.taken { cursor: default; }
+.cell.taken:hover { background: #ffffff; }
+
+/* SVG marks — always rendered, hidden via opacity */
+.mark {
+    position: absolute;
+    inset: 12%;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.cell.x .mark.x { opacity: 1; }
+.cell.o .mark.o { opacity: 1; }
+
+.mark line, .mark circle {
+    fill: none;
+    stroke-width: 11;
+    stroke-linecap: round;
+}
+
+.mark.x line { stroke: #3b82f6; }
+.mark.o circle { stroke: #ef4444; }
+
+/* stroke-dash: hidden by default */
+.mark.x line { stroke-dasharray: 90; stroke-dashoffset: 90; }
+.mark.o circle { stroke-dasharray: 214; stroke-dashoffset: 214; }
+
+/* non-animated: show instantly */
+.cell.x:not(.anim) .mark.x line,
+.cell.o:not(.anim) .mark.o circle {
+    stroke-dashoffset: 0;
+}
+
+/* animated */
+.cell.anim .mark.x line {
+    animation: draw 0.2s ease-out forwards;
+}
+.cell.anim .mark.x line + line {
+    animation: draw 0.2s ease-out 0.04s forwards;
+}
+.cell.anim .mark.o circle {
+    animation: draw 0.25s ease-out forwards;
+}
+
+@keyframes draw {
+    to { stroke-dashoffset: 0; }
+}
+
+/* win */
+.cell.win { background: #f0fdf4; }
+.cell.win:hover { background: #f0fdf4; }
+.cell.win .mark.x line { stroke: #22c55e; }
+.cell.win .mark.o circle { stroke: #22c55e; }
