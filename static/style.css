@@ -148,7 +148,7 @@ button.danger:active { opacity: 0.9; }
 [data-theme="dark"] .theme-btn .icon-sun { opacity: 0; }
 [data-theme="dark"] .theme-btn .icon-moon { opacity: 1; }
 
-.theme-btn.spin { animation: themeSpin 0.5s ease-out !important; }
+.theme-btn.spin { animation: themeSpin 0.5s ease-out forwards; }
 
 @keyframes themeSpin {
     0% { transform: rotate(0deg); }
@@ -168,7 +168,7 @@ button.danger:active { opacity: 0.9; }
     transition: background 0.3s, box-shadow 0.3s;
 }
 
-#menu h1 { margin-bottom: 0; }
+#menu h1 { margin-bottom: 12px; }
 #menu button.primary { width: 200px; padding: 10px 20px; }
 #menu button.primary:hover, #menu button.primary.btn-hover { box-shadow: 0 4px 16px rgba(79,143,247,0.4); transform: translateY(-2px); }
 #menu button.primary:active, #menu button.primary.btn-active { box-shadow: 0 1px 4px rgba(79,143,247,0.2); transform: translateY(0); }
@@ -405,9 +405,3 @@ button.danger:active { opacity: 0.9; }
     100% { opacity: 1; }
 }
 #menu { animation: fadeSlide 0.4s ease-out; }
-#menu > * { animation: fadeSlide 0.4s ease-out forwards; }
-#menu > *:nth-child(1) { animation-delay: 0.02s; }
-#menu > *:nth-child(2) { animation-delay: 0.06s; }
-#menu > *:nth-child(3) { animation-delay: 0.10s; }
-#menu > *:nth-child(4) { animation-delay: 0.14s; }
-#menu > *:nth-child(5) { animation-delay: 0.18s; }
