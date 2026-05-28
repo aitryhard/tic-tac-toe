@@ -307,14 +307,24 @@ button.danger:active { opacity: 0.9; }
     100% { opacity: 0; transform: translateX(-50%) translateY(-6px); }
 }
 
+.action-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 340px;
+}
 #status {
+    flex: 1;
+    text-align: center;
     font-size: 0.9rem;
     font-weight: 600;
     color: var(--text-secondary);
-    text-align: center;
-    height: 1.4em;
-    line-height: 1.4em;
+    white-space: nowrap;
 }
+#status .win-x { color: var(--blue); }
+#status .win-o { color: var(--red); }
+#status.pop { animation: statusPop 0.25s ease-out; }
+@keyframes statusPop { 0% { opacity: 0; } 100% { opacity: 1; } }
 #status.pop {
     animation: statusPop 0.25s ease-out;
 }
@@ -487,4 +497,5 @@ body::before {
     h1 { font-size: 2rem; }
     #room-code-input { font-size: 0.8rem; padding: 6px 8px; }
     #join-section button.primary { padding: 6px 8px; font-size: 0.7rem; }
+    .action-row { width: 300px; }
 }

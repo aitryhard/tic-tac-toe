@@ -204,10 +204,11 @@ const roomCodeText = document.getElementById('room-code-text');
 const copyBtn = document.getElementById('copy-btn');
 const copyToast = document.getElementById('copy-toast');
 
-function setStatus(text) {
+function setStatus(text, html = false) {
     statusEl.classList.remove('pop');
     void statusEl.offsetHeight;
-    statusEl.textContent = text;
+    if (html) statusEl.innerHTML = text;
+    else statusEl.textContent = text;
     statusEl.classList.add('pop');
 }
 
@@ -328,7 +329,9 @@ function handleMessage(msg) {
         case 'game_state':
             renderBoard(msg.state, true);
             if (msg.state.winner) {
-                setStatus(`${msg.state.winner} ` + t('wins')); gameActive = false;
+                const w = msg.state.winner;
+                setStatus(`<span class="win-${w.toLowerCase()}">${w}</span> ${t('wins')}`, true);
+                gameActive = false;
                 clearTimer();
                 if (msg.state.winner === player) { confetti(); soundWin(); }
                 else { soundLose(); }
