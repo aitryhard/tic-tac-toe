@@ -70,26 +70,44 @@ function beep(freq, duration, type = 'sine', vol = 0.08) {
     osc.stop(ctx.currentTime + duration);
 }
 
-function drawSound(duration, vol = 0.04) {
+function drawSound(duration, vol = 0.03) {
     const ctx = getAudio();
     const sr = ctx.sampleRate;
     const len = Math.floor(sr * duration);
     const buf = ctx.createBuffer(1, len, sr);
     const data = buf.getChannelData(0);
+    // Pencil crackles: random sparse noise spikes
+    let i = 0;
+    while (i < len) {
+        const skip = 2 + Math.floor(Math.random() * 6); // 2-8 samples between crackles
+        i += skip;
+        if (i >= len) break;
+        const amp = 0.3 + Math.random() * 0.7; // random crackle intensity
+        const w = 1 + Math.floor(Math.random() * 3); // 1-3 sample wide crackle
+        for (let j = 0; j < w && (i + j) < len; j++) {
+            data[i + j] = (Math.random() * 2 - 1) * amp;
+        }
+    }
+    // Apply overall stroke envelope
     for (let i = 0; i < len; i++) {
-        const env = Math.min(i / (len * 0.03), 1, (len - i) / (len * 0.15));
-        data[i] = ((Math.random() * 2 - 1) * 0.4 + Math.sin(i * 0.3) * 0.6) * env;
+        const env = Math.min(i / (len * 0.02), 1, (len - i) / (len * 0.1));
+        data[i] *= env;
     }
     const src = ctx.createBufferSource();
     src.buffer = buf;
     const gain = ctx.createGain();
     gain.gain.value = vol;
-    const filter = ctx.createBiquadFilter();
-    filter.type = 'bandpass';
-    filter.frequency.value = 1800;
-    filter.Q.value = 0.8;
-    src.connect(filter);
-    filter.connect(gain);
+    const hp = ctx.createBiquadFilter();
+    hp.type = 'highpass';
+    hp.frequency.value = 3500;
+    const peak = ctx.createBiquadFilter();
+    peak.type = 'peaking';
+    peak.frequency.value = 6000;
+    peak.Q.value = 1.5;
+    peak.gain.value = 8;
+    src.connect(hp);
+    hp.connect(peak);
+    peak.connect(gain);
     gain.connect(ctx.destination);
     src.start();
 }
