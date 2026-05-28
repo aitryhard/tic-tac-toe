@@ -1,13 +1,58 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+:root {
+    --bg: #ffffff;
+    --bg-secondary: #fafafa;
+    --text: #1e293b;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
+    --border: #d1d5db;
+    --border-light: #e2e8f0;
+    --board-bg: #e2e8f0;
+    --board-border: #cbd5e1;
+    --cell-bg: #ffffff;
+    --cell-hover: #f8fafc;
+    --label-bg: #f1f5f9;
+    --blue: #3b82f6;
+    --blue-hover: #2563eb;
+    --red: #ef4444;
+    --red-hover: #dc2626;
+    --green: #22c55e;
+    --win-bg: #f0fdf4;
+    --shadow: 0 1px 4px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.02);
+}
+
+[data-theme="dark"] {
+    --bg: #0f172a;
+    --bg-secondary: #1e293b;
+    --text: #e2e8f0;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --border: #334155;
+    --border-light: #1e293b;
+    --board-bg: #1e293b;
+    --board-border: #334155;
+    --cell-bg: #0f172a;
+    --cell-hover: #1e293b;
+    --label-bg: #1e293b;
+    --blue: #3b82f6;
+    --blue-hover: #60a5fa;
+    --red: #ef4444;
+    --red-hover: #f87171;
+    --green: #22c55e;
+    --win-bg: #052e16;
+    --shadow: 0 1px 4px rgba(0,0,0,0.2), 0 4px 16px rgba(0,0,0,0.1);
+}
+
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-    background: #ffffff;
-    color: #1e293b;
+    background: var(--bg);
+    color: var(--text);
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    transition: background 0.3s, color 0.3s;
 }
 
 #app {
@@ -18,22 +63,47 @@ body {
     padding: 24px;
 }
 
-h1 { font-size: 1.75rem; font-weight: 700; color: #0f172a; letter-spacing: -0.5px; }
+h1 { font-size: 1.75rem; font-weight: 700; color: var(--text); letter-spacing: -0.5px; }
 
 button {
     font-size: 0.875rem;
     padding: 8px 20px;
-    border: 1px solid #d1d5db;
+    border: 1px solid var(--border);
     border-radius: 8px;
     cursor: pointer;
-    background: #ffffff;
-    color: #1e293b;
+    background: var(--cell-bg);
+    color: var(--text);
     font-weight: 500;
     transition: all 0.12s;
     user-select: none;
 }
-button:hover { background: #f8fafc; border-color: #94a3b8; }
-button:active { background: #f1f5f9; }
+button:hover { background: var(--cell-hover); border-color: var(--text-muted); }
+button:active { background: var(--border-light); }
+
+button.primary {
+    background: var(--blue);
+    color: #ffffff;
+    border-color: var(--blue);
+}
+button.primary:hover { background: var(--blue-hover); border-color: var(--blue-hover); }
+button.primary:active { opacity: 0.9; }
+
+button.danger {
+    background: var(--red);
+    color: #ffffff;
+    border-color: var(--red);
+}
+button.danger:hover { background: var(--red-hover); border-color: var(--red-hover); }
+
+.theme-btn {
+    font-size: 1.1rem;
+    padding: 6px 10px;
+    line-height: 1;
+    border-radius: 6px;
+    background: transparent;
+    border-color: transparent;
+}
+.theme-btn:hover { background: var(--cell-hover); border-color: var(--border); }
 
 #menu {
     display: flex;
@@ -41,14 +111,16 @@ button:active { background: #f1f5f9; }
     align-items: center;
     gap: 8px;
     padding: 40px 48px;
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--border-light);
     border-radius: 16px;
-    background: #ffffff;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.02);
+    background: var(--bg-secondary);
+    box-shadow: var(--shadow);
+    transition: background 0.3s, box-shadow 0.3s;
 }
 
 #menu h1 { margin-bottom: 4px; }
-#menu button { width: 200px; text-align: center; padding: 10px 20px; }
+#menu button.primary { width: 200px; text-align: center; padding: 10px 20px; }
+#menu .theme-btn { width: auto; margin-top: 4px; }
 
 #join-section { display: flex; gap: 6px; margin-top: 8px; width: 200px; }
 
@@ -56,20 +128,21 @@ button:active { background: #f1f5f9; }
     flex: 1;
     font-size: 0.875rem;
     padding: 8px 12px;
-    border: 1px solid #d1d5db;
+    border: 1px solid var(--border);
     border-radius: 8px;
-    background: #ffffff;
-    color: #1e293b;
+    background: var(--cell-bg);
+    color: var(--text);
     text-transform: uppercase;
     letter-spacing: 3px;
     text-align: center;
     font-weight: 600;
     font-family: inherit;
+    transition: background 0.3s, color 0.3s, border-color 0.15s;
 }
-#room-code-input:focus { border-color: #3b82f6; outline: none; box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
-#room-code-input::placeholder { letter-spacing: 0; font-weight: 400; text-transform: none; }
+#room-code-input:focus { border-color: var(--blue); outline: none; box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
+#room-code-input::placeholder { letter-spacing: 0; font-weight: 400; text-transform: none; color: var(--text-muted); }
 
-#join-section button { width: auto; }
+#join-section button.primary { width: auto; }
 
 #game { display: flex; flex-direction: column; align-items: center; gap: 14px; }
 
@@ -78,19 +151,27 @@ button:active { background: #f1f5f9; }
     align-items: center;
     gap: 10px;
     width: 100%;
-    max-width: 360px;
+    max-width: 380px;
 }
 
 #room-label {
-    font-size: 0.75rem; color: #64748b; background: #f1f5f9;
-    padding: 3px 10px; border-radius: 4px; font-weight: 600; letter-spacing: 0.5px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    background: var(--label-bg);
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
 }
 
 #status {
-    flex: 1; text-align: center; font-size: 0.9rem; font-weight: 600; color: #475569; white-space: nowrap;
+    flex: 1;
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    white-space: nowrap;
 }
-
-#header button { font-size: 0.8rem; padding: 5px 12px; }
 
 #board {
     display: grid;
@@ -98,29 +179,30 @@ button:active { background: #f1f5f9; }
     gap: 3px;
     width: 340px;
     height: 340px;
-    background: #e2e8f0;
-    border: 1px solid #cbd5e1;
+    background: var(--board-bg);
+    border: 1px solid var(--board-border);
     border-radius: 12px;
     padding: 3px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    transition: background 0.3s, border-color 0.3s;
 }
 
 .cell {
     position: relative;
-    background: #ffffff;
+    background: var(--cell-bg);
     cursor: pointer;
     border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background 0.12s;
+    transition: background 0.12s, background 0.3s;
     aspect-ratio: 1;
 }
-.cell:hover { background: #f8fafc; }
+.cell:hover { background: var(--cell-hover); }
 .cell.taken { cursor: default; }
-.cell.taken:hover { background: #ffffff; }
+.cell.taken:hover { background: var(--cell-bg); }
 
-/* SVG marks — always rendered, hidden via opacity */
+/* SVG marks */
 .mark {
     position: absolute;
     inset: 12%;
@@ -137,36 +219,42 @@ button:active { background: #f1f5f9; }
     stroke-linecap: round;
 }
 
-.mark.x line { stroke: #3b82f6; }
-.mark.o circle { stroke: #ef4444; }
+.mark.x line { stroke: var(--blue); }
+.mark.o circle { stroke: var(--red); }
 
-/* stroke-dash: hidden by default */
 .mark.x line { stroke-dasharray: 90; stroke-dashoffset: 90; }
 .mark.o circle { stroke-dasharray: 214; stroke-dashoffset: 214; }
 
-/* non-animated: show instantly */
 .cell.x:not(.anim) .mark.x line,
 .cell.o:not(.anim) .mark.o circle {
     stroke-dashoffset: 0;
 }
 
-/* animated */
-.cell.anim .mark.x line {
-    animation: draw 0.2s ease-out forwards;
+.cell.anim .mark.x line:first-child {
+    animation: drawX1 0.25s ease-out forwards;
 }
-.cell.anim .mark.x line + line {
-    animation: draw 0.2s ease-out 0.04s forwards;
+.cell.anim .mark.x line:last-child {
+    animation: drawX2 0.25s ease-out 0.3s forwards;
 }
 .cell.anim .mark.o circle {
-    animation: draw 0.25s ease-out forwards;
+    animation: drawO 0.3s ease-out forwards;
 }
 
-@keyframes draw {
-    to { stroke-dashoffset: 0; }
+@keyframes drawX1 {
+    0%   { stroke-dashoffset: 90; }
+    100% { stroke-dashoffset: 0; }
+}
+@keyframes drawX2 {
+    0%   { stroke-dashoffset: 90; }
+    100% { stroke-dashoffset: 0; }
+}
+@keyframes drawO {
+    0%   { stroke-dashoffset: 214; }
+    100% { stroke-dashoffset: 0; }
 }
 
 /* win */
-.cell.win { background: #f0fdf4; }
-.cell.win:hover { background: #f0fdf4; }
-.cell.win .mark.x line { stroke: #22c55e; }
-.cell.win .mark.o circle { stroke: #22c55e; }
+.cell.win { background: var(--win-bg); }
+.cell.win:hover { background: var(--win-bg); }
+.cell.win .mark.x line { stroke: var(--green); }
+.cell.win .mark.o circle { stroke: var(--green); }

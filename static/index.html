@@ -10,12 +10,13 @@
     <div id="app">
         <div id="menu">
             <h1>Tic-Tac-Toe</h1>
-            <button id="btn-vs-player">Create Room (vs Player)</button>
-            <button id="btn-vs-ai">Play vs AI</button>
+            <button id="btn-vs-player" class="primary">Create Room (vs Player)</button>
+            <button id="btn-vs-ai" class="primary">Play vs AI</button>
             <div id="join-section">
                 <input id="room-code-input" placeholder="Room code" maxlength="6">
-                <button id="btn-join">Join</button>
+                <button id="btn-join" class="primary">Join</button>
             </div>
+            <button id="btn-theme-menu" class="theme-btn">🌙</button>
         </div>
 
         <div id="game" style="display:none">
@@ -24,6 +25,7 @@
                 <span id="status"></span>
                 <button id="btn-restart">Restart</button>
                 <button id="btn-leave">Leave</button>
+                <button id="btn-theme-game" class="theme-btn">🌙</button>
             </div>
             <div id="board">
                 <div class="cell" data-i="0">

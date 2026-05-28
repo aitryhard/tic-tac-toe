@@ -4,6 +4,7 @@ let roomCode = null;
 let vsAI = false;
 let gameActive = false;
 let prevBoard = Array(9).fill(null);
+let darkTheme = localStorage.getItem('theme') === 'dark';
 
 const menu = document.getElementById('menu');
 const gameDiv = document.getElementById('game');
@@ -18,12 +19,32 @@ document.getElementById('btn-restart').onclick = () => send({ type: 'restart' })
 document.getElementById('btn-leave').onclick = leave;
 document.getElementById('room-code-input').onkeydown = (e) => { if (e.key === 'Enter') joinRoom(); };
 
+document.querySelectorAll('.theme-btn').forEach(btn => btn.onclick = toggleTheme);
+
+applyTheme();
+
 cells.forEach(cell => {
     cell.onclick = () => {
         if (!gameActive) return;
         send({ type: 'move', position: parseInt(cell.dataset.i) });
     };
 });
+
+function applyTheme() {
+    if (darkTheme) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        document.querySelectorAll('.theme-btn').forEach(b => b.textContent = '☀️');
+    } else {
+        document.documentElement.removeAttribute('data-theme');
+        document.querySelectorAll('.theme-btn').forEach(b => b.textContent = '🌙');
+    }
+    localStorage.setItem('theme', darkTheme ? 'dark' : 'light');
+}
+
+function toggleTheme() {
+    darkTheme = !darkTheme;
+    applyTheme();
+}
 
 async function createRoom(vsAi) {
     try {
