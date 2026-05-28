@@ -70,8 +70,32 @@ function beep(freq, duration, type = 'sine', vol = 0.08) {
     osc.stop(ctx.currentTime + duration);
 }
 
-function soundX() { beep(880, 0.06, 'square', 0.06); }
-function soundO() { beep(660, 0.07, 'triangle', 0.06); }
+function drawSound(duration, vol = 0.04) {
+    const ctx = getAudio();
+    const sr = ctx.sampleRate;
+    const len = Math.floor(sr * duration);
+    const buf = ctx.createBuffer(1, len, sr);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) {
+        const env = Math.min(i / (len * 0.03), 1, (len - i) / (len * 0.15));
+        data[i] = ((Math.random() * 2 - 1) * 0.4 + Math.sin(i * 0.3) * 0.6) * env;
+    }
+    const src = ctx.createBufferSource();
+    src.buffer = buf;
+    const gain = ctx.createGain();
+    gain.gain.value = vol;
+    const filter = ctx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.value = 1800;
+    filter.Q.value = 0.8;
+    src.connect(filter);
+    filter.connect(gain);
+    gain.connect(ctx.destination);
+    src.start();
+}
+
+function soundX() { drawSound(0.06, 0.03); setTimeout(() => drawSound(0.06, 0.03), 300); }
+function soundO() { drawSound(0.28, 0.035); }
 function soundWin() {
     beep(660, 0.1, 'sine', 0.08);
     setTimeout(() => beep(880, 0.1, 'sine', 0.08), 100);
