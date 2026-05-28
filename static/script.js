@@ -21,7 +21,6 @@ function setStatus(text) {
 const roomCodeText = document.getElementById('room-code-text');
 const copyBtn = document.getElementById('copy-btn');
 const copyToast = document.getElementById('copy-toast');
-copyBtn.textContent = 'Copy';
 
 copyBtn.onclick = async () => {
     try {
