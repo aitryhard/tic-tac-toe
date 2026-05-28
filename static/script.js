@@ -42,6 +42,15 @@ document.getElementById('room-code-input').onkeydown = (e) => { if (e.key === 'E
 document.querySelectorAll('.theme-btn').forEach(btn => btn.onclick = toggleTheme);
 applyTheme();
 
+// Force button hover via JS for guaranteed animation
+document.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('mouseenter', () => btn.classList.add('btn-hover'));
+    btn.addEventListener('mouseleave', () => btn.classList.remove('btn-hover'));
+    btn.addEventListener('mousedown', () => btn.classList.add('btn-active'));
+    btn.addEventListener('mouseup', () => btn.classList.remove('btn-active'));
+    btn.addEventListener('mouseleave', () => btn.classList.remove('btn-active'));
+});
+
 cells.forEach(cell => {
     cell.onclick = () => {
         if (!gameActive) return;
