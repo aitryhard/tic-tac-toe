@@ -220,9 +220,6 @@ button.danger:hover { background: var(--red-hover); border-color: var(--red-hove
     gap: 10px;
     width: 100%;
     max-width: 380px;
-    position: relative;
-    justify-content: flex-end;
-    min-height: 32px;
 }
 
 #room-label {
@@ -237,15 +234,19 @@ button.danger:hover { background: var(--red-hover); border-color: var(--red-hove
 }
 
 #status {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
     font-size: 0.9rem;
     font-weight: 600;
     color: var(--text-secondary);
-    white-space: nowrap;
-    pointer-events: none;
+    text-align: center;
+    min-height: 1.4em;
     transition: opacity 0.15s;
+}
+#status.pop {
+    animation: statusPop 0.3s ease-out;
+}
+@keyframes statusPop {
+    0% { opacity: 0; transform: scale(0.9); }
+    100% { opacity: 1; transform: scale(1); }
 }
 #status.pop {
     animation: statusPop 0.3s ease-out;
