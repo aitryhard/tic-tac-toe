@@ -141,7 +141,7 @@ button.danger:active { opacity: 0.9; }
 }
 
 #menu h1 { margin-bottom: 4px; }
-#menu button.primary { width: 200px; text-align: center; padding: 10px 20px; }
+#menu button.primary { width: 200px; padding: 10px 20px; }
 #menu button.primary:hover { transform: scale(1.1); }
 #menu button.primary:active { transform: scale(0.93); }
 #menu .theme-btn { width: auto; margin-top: 4px; }
