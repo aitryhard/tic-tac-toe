@@ -19,6 +19,18 @@ function setStatus(text) {
     statusEl.classList.add('pop');
 }
 
+const roomCodeText = document.getElementById('room-code-text');
+const copyBtn = document.getElementById('copy-btn');
+
+copyBtn.onclick = async () => {
+    try {
+        await navigator.clipboard.writeText(roomCode);
+        copyBtn.classList.remove('copied');
+        void copyBtn.offsetHeight;
+        copyBtn.classList.add('copied');
+    } catch (_) {}
+};
+
 document.getElementById('btn-vs-player').onclick = () => createRoom(false);
 document.getElementById('btn-vs-ai').onclick = () => createRoom(true);
 document.getElementById('btn-join').onclick = joinRoom;
@@ -75,7 +87,7 @@ function connect() {
     closeWs();
     menu.style.display = 'none';
     gameDiv.style.display = 'flex';
-    roomLabel.textContent = roomCode;
+    roomCodeText.textContent = roomCode;
 
     const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
     ws = new WebSocket(`${proto}//${location.host}/ws/${roomCode}`);

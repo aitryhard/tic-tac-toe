@@ -228,6 +228,26 @@ button.danger:active { opacity: 0.9; }
     font-weight: 600;
     letter-spacing: 0.5px;
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+#copy-btn {
+    cursor: pointer;
+    font-size: 0.8rem;
+    line-height: 1;
+    display: inline-block;
+    transition: transform 0.15s;
+    user-select: none;
+}
+#copy-btn:hover { transform: scale(1.2); }
+#copy-btn.copied { animation: copyPop 0.3s ease-out; }
+
+@keyframes copyPop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.4); }
+    100% { transform: scale(1); }
 }
 
 #status {
