@@ -126,7 +126,13 @@ button.danger {
 }
 button.danger:active { opacity: 0.9; }
 
-.theme-btn { font-size: 1.1rem; padding: 6px 10px; line-height: 1; border-radius: 6px; background: transparent; border-color: transparent; }
+.theme-btn { font-size: 1.1rem; padding: 6px 10px; line-height: 1; border-radius: 6px; background: transparent; border-color: transparent; transition: none; box-shadow: none; transform: none; }
+.theme-btn:hover { box-shadow: none; transform: none; }
+.theme-btn:active { box-shadow: none; transform: none; }
+.theme-btn svg { display: block; transition: transform 0.3s; }
+.theme-btn:hover svg { transform: rotate(90deg); }
+.theme-btn.btn-hover { box-shadow: none; transform: none; }
+.theme-btn.btn-hover svg { transform: rotate(90deg); }
 
 #menu {
     display: flex;
@@ -146,8 +152,6 @@ button.danger:active { opacity: 0.9; }
 #menu button.primary:hover, #menu button.primary.btn-hover { box-shadow: 0 4px 16px rgba(79,143,247,0.4); transform: translateY(-2px); }
 #menu button.primary:active, #menu button.primary.btn-active { box-shadow: 0 1px 4px rgba(79,143,247,0.2); transform: translateY(0); }
 #menu .theme-btn { width: auto; margin-top: 4px; }
-#menu .theme-btn:hover, #menu .theme-btn.btn-hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); transform: translateY(-2px); }
-#menu .theme-btn:active, #menu .theme-btn.btn-active { transform: translateY(0); }
 
 #join-section { display: flex; gap: 6px; margin-top: 8px; width: 200px; }
 #join-section button.primary {
