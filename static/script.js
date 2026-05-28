@@ -38,8 +38,12 @@ document.getElementById('btn-restart').onclick = () => send({ type: 'restart' })
 document.getElementById('btn-leave').onclick = leave;
 document.getElementById('room-code-input').onkeydown = (e) => { if (e.key === 'Enter') joinRoom(); };
 
+const sunSVG = '<svg viewBox="0 0 24 24" width="16" height="16"><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72 1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/><circle cx="12" cy="12" r="4" fill="currentColor"/></svg>';
+const moonSVG = '<svg viewBox="0 0 24 24" width="16" height="16"><path d="M20 12.79A9 9 0 1 1 11.21 4 7 7 0 0 0 20 12.79z" fill="currentColor"/></svg>';
+
 document.querySelectorAll('.theme-btn').forEach(btn => btn.onclick = toggleTheme);
 applyTheme();
+document.querySelectorAll('.theme-btn').forEach(btn => btn.innerHTML = darkTheme ? sunSVG : moonSVG);
 
 cells.forEach(cell => {
     cell.onclick = () => {
@@ -58,14 +62,14 @@ function applyTheme() {
 }
 
 function toggleTheme() {
-    document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.add('spin'));
-    setTimeout(() => {
-        darkTheme = !darkTheme;
-        applyTheme();
-    }, 250);
-    setTimeout(() => {
-        document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('spin'));
-    }, 500);
+    darkTheme = !darkTheme;
+    const nextIcon = darkTheme ? sunSVG : moonSVG;
+    document.querySelectorAll('.theme-btn').forEach(btn => {
+        btn.classList.add('spin');
+        setTimeout(() => { btn.innerHTML = nextIcon; }, 250);
+        setTimeout(() => { btn.classList.remove('spin'); }, 500);
+    });
+    applyTheme();
 }
 
 async function createRoom(vsAi) {

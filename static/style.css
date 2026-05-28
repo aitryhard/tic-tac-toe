@@ -134,39 +134,14 @@ button.danger:active { opacity: 0.9; }
     box-shadow: none;
     display: flex; align-items: center; justify-content: center;
     cursor: pointer;
-    position: relative;
+    color: var(--text-muted);
+    transition: none;
 }
-.theme-btn:hover { box-shadow: none; transform: none; }
+.theme-btn:hover { box-shadow: none; transform: none; color: var(--blue); }
 .theme-btn:active { box-shadow: none; transform: none; }
+.theme-btn svg { display: block; }
 
-.theme-btn::before {
-    content: '';
-    width: 10px; height: 10px;
-    border-radius: 50%;
-    background: var(--text-muted);
-    box-shadow:
-        -7px 0 0 -3px var(--text-muted),
-        7px 0 0 -3px var(--text-muted),
-        0 -7px 0 -3px var(--text-muted),
-        0 7px 0 -3px var(--text-muted);
-    transition: background 0.2s, box-shadow 0.2s;
-}
-.theme-btn:hover::before {
-    background: var(--blue);
-    box-shadow:
-        -7px 0 0 -3px var(--blue),
-        7px 0 0 -3px var(--blue),
-        0 -7px 0 -3px var(--blue),
-        0 7px 0 -3px var(--blue);
-}
-
-[data-theme="dark"] .theme-btn::before {
-    background: var(--text-muted);
-    box-shadow: none;
-}
-[data-theme="dark"] .theme-btn:hover::before { background: var(--blue); }
-
-.theme-btn.spin { animation: themeSpin 0.5s ease-out; }
+.theme-btn.spin { animation: themeSpin 0.5s ease-out !important; }
 
 @keyframes themeSpin {
     0% { transform: rotate(0deg); }
