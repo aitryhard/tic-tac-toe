@@ -22,6 +22,8 @@ const L = {
         errPrefix: 'Error: ',
         empty: 'Clipboard is empty',
         copyHint: 'Copy something to get started!',
+        timeoutAI: "Time's up! AI wins!",
+        timeoutPvP: "'s time is up! ",
     },
     ru: {
         title: 'Крестики Нолики',
@@ -46,6 +48,8 @@ const L = {
         errPrefix: 'Ошибка: ',
         empty: 'Буфер обмена пуст',
         copyHint: 'Скопируйте что-нибудь!',
+        timeoutAI: 'Время вышло! ИИ победил!',
+        timeoutPvP: ' — время вышло! ',
     }
 };
 
@@ -125,25 +129,19 @@ function startTimer() {
     clearTimer();
     timerLeft = TIMER_SEC;
     timerBar.style.opacity = '1';
-    timerFill.style.width = '100%';
-    timerFill.classList.remove('low');
     timerInterval = setInterval(() => {
         timerLeft -= 0.05;
-        const pct = Math.max(0, timerLeft / TIMER_SEC * 100);
-        timerFill.style.width = pct + '%';
-        if (timerLeft <= 3) timerFill.classList.add('low');
+        const pct = Math.max(0, Math.min(1, timerLeft / TIMER_SEC));
+        timerFill.style.width = (pct * 100) + '%';
+        // HSL: 120° green -> 0° red as time decreases
+        const hue = pct * 120;
+        timerFill.style.background = `hsl(${hue}, 70%, 50%)`;
         if (timerLeft <= 0) {
             clearTimer();
             if (!gameActive) return;
             gameActive = false;
-            if (vsAI) {
-                setStatus(t('yourTurn') === t('yourTurn') ? 'Time\'s up! AI wins!' : 'Время вышло! ИИ победил!');
-                soundLose();
-            } else {
-                const opponent = player === 'X' ? 'O' : 'X';
-                setStatus(`${player} - time's up! ${opponent} wins!`);
-                soundLose();
-            }
+            setStatus(vsAI ? t('timeoutAI') : player + t('timeoutPvP') + (player === 'X' ? 'O' : 'X') + ' wins!');
+            soundLose();
         }
     }, 50);
 }

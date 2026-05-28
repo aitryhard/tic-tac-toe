@@ -454,11 +454,10 @@ button.danger:active { opacity: 0.9; }
 }
 #timer-fill {
     height: 100%; width: 100%;
-    background: var(--blue);
+    background: hsl(120, 70%, 50%);
     border-radius: 2px;
-    transition: width 0.1s linear;
+    transition: width 0.05s linear;
 }
-#timer-fill.low { background: var(--red); }
 
 /* share button */
 .share-btn {
