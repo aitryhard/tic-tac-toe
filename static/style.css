@@ -106,9 +106,11 @@ button {
     transition: transform 0.15s, box-shadow 0.15s, background 0.15s, border-color 0.15s;
     user-select: none;
     box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    will-change: transform;
+    transform: scale(1);
 }
-button:hover { transform: scale(1.1); }
-button:active { transform: scale(0.93); }
+button:hover { transform: scale(1.12); }
+button:active { transform: scale(0.95); }
 
 button.primary {
     background: var(--blue);
@@ -141,12 +143,12 @@ button.danger:active { opacity: 0.9; }
 }
 
 #menu h1 { margin-bottom: 4px; }
-#menu button.primary { width: 200px; padding: 10px 20px; }
+#menu button.primary { width: 200px; padding: 10px 20px; transform: scale(1); }
 #menu button.primary:hover { transform: scale(1.1); }
-#menu button.primary:active { transform: scale(0.93); }
-#menu .theme-btn { width: auto; margin-top: 4px; }
+#menu button.primary:active { transform: scale(0.95); }
+#menu .theme-btn { width: auto; margin-top: 4px; transform: scale(1); }
 #menu .theme-btn:hover { transform: scale(1.1); }
-#menu .theme-btn:active { transform: scale(0.93); }
+#menu .theme-btn:active { transform: scale(0.95); }
 
 #join-section { display: flex; gap: 6px; margin-top: 8px; width: 200px; }
 #join-section button.primary {
