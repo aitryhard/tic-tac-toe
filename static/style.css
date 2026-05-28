@@ -73,6 +73,7 @@ h1 {
 
 .title span {
     display: inline-block;
+    will-change: transform;
     animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both,
                float 2.4s ease-in-out 0.6s infinite;
 }
@@ -295,7 +296,7 @@ button.danger:hover { background: var(--red-hover); border-color: var(--red-hove
 .mark.x line { stroke: var(--blue); }
 .mark.o circle { stroke: var(--red); }
 
-.mark.x line { stroke-dasharray: 90; stroke-dashoffset: 90; }
+.mark.x line { stroke-dasharray: 100; stroke-dashoffset: 100; }
 .mark.o circle { stroke-dasharray: 214; stroke-dashoffset: 214; }
 
 .cell.x:not(.anim) .mark.x line,
@@ -314,11 +315,11 @@ button.danger:hover { background: var(--red-hover); border-color: var(--red-hove
 }
 
 @keyframes drawX1 {
-    0%   { stroke-dashoffset: 90; }
+    0%   { stroke-dashoffset: 100; }
     100% { stroke-dashoffset: 0; }
 }
 @keyframes drawX2 {
-    0%   { stroke-dashoffset: 90; }
+    0%   { stroke-dashoffset: 100; }
     100% { stroke-dashoffset: 0; }
 }
 @keyframes drawO {
