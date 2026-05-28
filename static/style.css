@@ -159,20 +159,20 @@ button.danger:hover { background: var(--red-hover); border-color: var(--red-hove
 #join-section { display: flex; gap: 6px; margin-top: 8px; width: 200px; }
 #join-section button.primary {
     flex-shrink: 0;
-    padding: 10px 14px;
-    font-size: 0.8rem;
+    padding: 8px 10px;
+    font-size: 0.75rem;
 }
 
 #room-code-input {
     flex: 1;
-    font-size: 1rem;
-    padding: 10px 14px;
+    font-size: 0.9rem;
+    padding: 8px 10px;
     border: 2px solid var(--border);
     border-radius: 10px;
     background: var(--cell-bg);
     color: var(--text);
     text-transform: uppercase;
-    letter-spacing: 4px;
+    letter-spacing: 3px;
     text-align: center;
     font-weight: 700;
     font-family: inherit;
@@ -183,14 +183,14 @@ button.danger:hover { background: var(--red-hover); border-color: var(--red-hove
     border-color: var(--blue);
     outline: none;
     box-shadow: 0 0 0 4px rgba(79,143,247,0.12);
-    letter-spacing: 5px;
+    letter-spacing: 4px;
 }
 #room-code-input::placeholder {
     letter-spacing: 0;
     font-weight: 400;
     text-transform: none;
     color: var(--text-muted);
-    font-size: 0.875rem;
+    font-size: 0.8rem;
 }
 
 #game { display: flex; flex-direction: column; align-items: center; gap: 14px; }
