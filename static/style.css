@@ -224,6 +224,7 @@ button.danger:active { opacity: 0.9; }
     display: flex;
     align-items: center;
     gap: 4px;
+    position: relative;
 }
 
 #copy-btn {
@@ -235,12 +236,32 @@ button.danger:active { opacity: 0.9; }
     user-select: none;
 }
 #copy-btn:hover { transform: scale(1.2); }
-#copy-btn.copied { animation: copyPop 0.3s ease-out; }
 
-@keyframes copyPop {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.4); }
-    100% { transform: scale(1); }
+#copy-toast {
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--blue);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    letter-spacing: 0;
+}
+#copy-toast.show {
+    animation: toastUp 1.2s ease-out forwards;
+}
+
+@keyframes toastUp {
+    0% { opacity: 0; transform: translateX(-50%) translateY(6px); }
+    15% { opacity: 1; transform: translateX(-50%) translateY(0); }
+    70% { opacity: 1; transform: translateX(-50%) translateY(0); }
+    100% { opacity: 0; transform: translateX(-50%) translateY(-6px); }
 }
 
 #status {

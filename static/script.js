@@ -21,13 +21,14 @@ function setStatus(text) {
 
 const roomCodeText = document.getElementById('room-code-text');
 const copyBtn = document.getElementById('copy-btn');
+const copyToast = document.getElementById('copy-toast');
 
 copyBtn.onclick = async () => {
     try {
         await navigator.clipboard.writeText(roomCode);
-        copyBtn.classList.remove('copied');
-        void copyBtn.offsetHeight;
-        copyBtn.classList.add('copied');
+        copyToast.classList.remove('show');
+        void copyToast.offsetHeight;
+        copyToast.classList.add('show');
     } catch (_) {}
 };
 
