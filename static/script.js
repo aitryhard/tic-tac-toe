@@ -76,17 +76,31 @@ function drawSound(duration, vol = 0.03) {
     const len = Math.floor(sr * duration);
     const buf = ctx.createBuffer(1, len, sr);
     const data = buf.getChannelData(0);
-    // Pencil crackles: random sparse noise spikes
-    let i = 0;
-    while (i < len) {
-        const skip = 2 + Math.floor(Math.random() * 6); // 2-8 samples between crackles
-        i += skip;
-        if (i >= len) break;
-        const amp = 0.3 + Math.random() * 0.7; // random crackle intensity
-        const w = 1 + Math.floor(Math.random() * 3); // 1-3 sample wide crackle
-        for (let j = 0; j < w && (i + j) < len; j++) {
-            data[i + j] = (Math.random() * 2 - 1) * amp;
-        }
+    // Rapid scratch: dense noise modulated by fast LFO
+    for (let i = 0; i < len; i++) {
+        const env = Math.min(i / (len * 0.01), 1, (len - i) / (len * 0.1));
+        // Fast amplitude modulation simulates pencil texture
+        const lfo = 0.5 + 0.5 * Math.sin(i * 0.4 + Math.sin(i * 0.15) * 2);
+        data[i] = (Math.random() * 2 - 1) * lfo * env;
+    }
+    const src = ctx.createBufferSource();
+    src.buffer = buf;
+    const gain = ctx.createGain();
+    gain.gain.value = vol;
+    // Bandpass to isolate scratch frequencies
+    const bp = ctx.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.frequency.value = 4500;
+    bp.Q.value = 0.6;
+    const hp = ctx.createBiquadFilter();
+    hp.type = 'highpass';
+    hp.frequency.value = 2500;
+    src.connect(bp);
+    bp.connect(hp);
+    hp.connect(gain);
+    gain.connect(ctx.destination);
+    src.start();
+}
     }
     // Apply overall stroke envelope
     for (let i = 0; i < len; i++) {
