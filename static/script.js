@@ -156,6 +156,7 @@ let vsAI = false;
 let gameActive = false;
 let prevBoard = Array(9).fill(null);
 let darkTheme = localStorage.getItem('theme') === 'dark';
+let difficulty = 1; // 0=easy, 1=medium, 2=hard
 
 const menu = document.getElementById('menu');
 const gameDiv = document.getElementById('game');
@@ -194,6 +195,36 @@ applyTheme();
 
 document.querySelectorAll('.lang-btn').forEach(btn => btn.onclick = toggleLang);
 applyLang();
+
+// Difficulty selector
+const diffRow = document.querySelector('.difficulty-row');
+const diffBtns = document.querySelectorAll('.diff-btn');
+diffBtns.forEach(btn => btn.onclick = () => {
+    difficulty = parseInt(btn.dataset.d);
+    diffBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+});
+// Show difficulty row after Play vs AI
+const btnAI = document.getElementById('btn-vs-ai');
+btnAI.onmouseenter = () => { diffRow.style.display = 'flex'; };
+diffRow.onmouseleave = (e) => {
+    if (!e.relatedTarget || !e.relatedTarget.closest('.difficulty-row, #btn-vs-ai')) {
+        diffRow.style.display = 'none';
+    }
+};
+diffRow.onmouseenter = () => { diffRow.style.display = 'flex'; };
+
+// Share button
+document.getElementById('btn-share').onclick = () => {
+    const url = `${location.origin}/?room=${roomCode}`;
+    navigator.clipboard.writeText(url).then(() => {
+        soundCopy();
+        document.getElementById('copy-toast').classList.remove('show');
+        void document.getElementById('copy-toast').offsetHeight;
+        document.getElementById('copy-toast').textContent = t('copied');
+        document.getElementById('copy-toast').classList.add('show');
+    }).catch(() => {});
+};
 
 cells.forEach(cell => {
     cell.onclick = () => {
@@ -236,7 +267,7 @@ async function createRoom(vsAi) {
         const res = await fetch('/api/room', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ vs_ai: vsAi }),
+            body: JSON.stringify({ vs_ai: vsAi, difficulty }),
         });
         const data = await res.json();
         if (data.code) { roomCode = data.code; vsAI = vsAi; connect(); }
@@ -321,6 +352,11 @@ function leave() {
     prevBoard = Array(9).fill(null);
     cells.forEach(c => { c.className = 'cell'; });
 }
+
+// Auto-join from URL
+const params = new URLSearchParams(location.search);
+const joinCode = params.get('room');
+if (joinCode) { roomCode = joinCode; vsAI = false; connect(); }
 
 function confetti() {
     const colors = ['#22c55e', '#eab308', '#ef4444', '#3b82f6'];

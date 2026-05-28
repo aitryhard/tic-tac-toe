@@ -37,7 +37,7 @@ impl RoomManager {
         }
     }
 
-    pub fn create_room(&mut self, vs_ai: bool) -> String {
+    pub fn create_room(&mut self, vs_ai: bool, difficulty: i32) -> String {
         let code = loop {
             let c = generate_code();
             if !self.rooms.contains_key(&c) {
@@ -47,7 +47,7 @@ impl RoomManager {
 
         let room = Room {
             code: code.clone(),
-            game: Game::new(vs_ai),
+            game: Game::new(vs_ai, difficulty),
             x_player: None,
             o_player: None,
         };

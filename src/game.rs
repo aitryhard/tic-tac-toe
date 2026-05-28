@@ -17,6 +17,7 @@ pub struct Game {
     pub draw: bool,
     pub win_line: Vec<usize>,
     pub vs_ai: bool,
+    pub difficulty: i32,
 }
 
 const WIN_COMBOS: [[usize; 3]; 8] = [
@@ -31,7 +32,7 @@ const WIN_COMBOS: [[usize; 3]; 8] = [
 ];
 
 impl Game {
-    pub fn new(vs_ai: bool) -> Self {
+    pub fn new(vs_ai: bool, difficulty: i32) -> Self {
         Self {
             board: [None; 9],
             current_turn: 'X',
@@ -39,6 +40,7 @@ impl Game {
             draw: false,
             win_line: Vec::new(),
             vs_ai,
+            difficulty,
         }
     }
 
@@ -83,7 +85,9 @@ impl Game {
         }
         let player = self.current_turn;
 
-        let pos = if rand::random::<f64>() < 0.35 {
+        let chance = match self.difficulty { 0 => 0.7, 1 => 0.35, _ => 0.0 };
+
+        let pos = if rand::random::<f64>() < chance {
             let empty: Vec<usize> = (0..9).filter(|i| self.board[*i].is_none()).collect();
             if empty.is_empty() { return None; }
             Some(empty[rand::random::<usize>() % empty.len()])

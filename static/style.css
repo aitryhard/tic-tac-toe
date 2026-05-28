@@ -432,3 +432,53 @@ button.danger:active { opacity: 0.9; }
     0% { transform: translateY(0) rotateZ(0deg); opacity: 1; }
     100% { transform: translateY(105vh) rotateZ(600deg); opacity: 0; }
 }
+
+/* difficulty selector */
+.difficulty-row { display: flex; gap: 4px; }
+.diff-btn {
+    font-size: 0.7rem; padding: 3px 8px;
+    border: 1px solid var(--border); border-radius: 4px;
+    background: transparent; color: var(--text-muted); cursor: pointer;
+    transition: all 0.15s; font-weight: 500;
+}
+.diff-btn:hover { color: var(--blue); border-color: var(--blue); }
+.diff-btn.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+
+/* share button */
+.share-btn {
+    font-size: 1rem; padding: 2px 6px; line-height: 1;
+    background: transparent; border: none; color: var(--text-muted);
+    cursor: pointer; transition: color 0.15s;
+}
+.share-btn:hover { color: var(--blue); }
+
+/* animated background */
+body::before {
+    content: '';
+    position: fixed; inset: 0;
+    z-index: -1;
+    background: linear-gradient(135deg, var(--bg) 0%, var(--bg-secondary) 30%, #f0ece4 70%, var(--bg) 100%);
+    background-size: 300% 300%;
+    animation: bgShift 12s ease-in-out infinite alternate;
+}
+[data-theme="dark"] body::before {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 30%, #0f1e2e 70%, #0f172a 100%);
+    background-size: 300% 300%;
+}
+@keyframes bgShift {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 100% 100%; }
+}
+
+/* mobile */
+@media (max-width: 480px) {
+    #menu { padding: 24px 20px; }
+    #menu button.primary { width: 220px; font-size: 0.85rem; }
+    #board { width: 300px; height: 300px; }
+    #header { max-width: 300px; flex-wrap: wrap; justify-content: center; }
+    #header button { font-size: 0.75rem; padding: 4px 8px; }
+    .mark line, .mark circle { stroke-width: 9; }
+    h1 { font-size: 2rem; }
+    #room-code-input { font-size: 0.8rem; padding: 6px 8px; }
+    #join-section button.primary { padding: 6px 8px; font-size: 0.7rem; }
+}
