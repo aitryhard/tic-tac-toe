@@ -156,8 +156,12 @@ button.danger:hover { background: var(--red-hover); border-color: var(--red-hove
 #menu button.primary { width: 200px; text-align: center; padding: 10px 20px; }
 #menu .theme-btn { width: auto; margin-top: 4px; }
 
-#join-section { display: flex; gap: 6px; margin-top: 8px; width: 100%; }
-#join-section button.primary { flex-shrink: 0; }
+#join-section { display: flex; gap: 6px; margin-top: 8px; width: 200px; }
+#join-section button.primary {
+    flex-shrink: 0;
+    padding: 10px 14px;
+    font-size: 0.8rem;
+}
 
 #room-code-input {
     flex: 1;
