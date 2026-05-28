@@ -23,6 +23,8 @@ const roomCodeText = document.getElementById('room-code-text');
 const copyBtn = document.getElementById('copy-btn');
 const copyToast = document.getElementById('copy-toast');
 
+copyBtn.innerHTML = '<svg viewBox="0 0 20 20" width="14" height="14"><rect x="5.5" y="7.5" width="10" height="11" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M4 4.5V16a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2H6a2 2 0 0 0-2 2z" fill="currentColor"/></svg>';
+
 copyBtn.onclick = async () => {
     try {
         await navigator.clipboard.writeText(roomCode);
@@ -59,12 +61,14 @@ cells.forEach(cell => {
 });
 
 function applyTheme() {
+    const sun = '<svg viewBox="0 0 20 20" width="16" height="16"><circle cx="10" cy="10" r="4.5" fill="currentColor"/><line x1="10" y1="1" x2="10" y2="3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="10" y1="16.5" x2="10" y2="19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="1" y1="10" x2="3.5" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="16.5" y1="10" x2="19" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="3.8" y1="3.8" x2="5.5" y2="5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="14.5" y1="14.5" x2="16.2" y2="16.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="3.8" y1="16.2" x2="5.5" y2="14.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="14.5" y1="5.5" x2="16.2" y2="3.8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
+    const moon = '<svg viewBox="0 0 20 20" width="16" height="16"><path d="M14.5 2.5a8.5 8.5 0 1 0 3 11.5 9 9 0 0 1-3-11.5z" fill="currentColor" stroke="currentColor" stroke-width="0.5" stroke-linecap="round"/></svg>';
     if (darkTheme) {
         document.documentElement.setAttribute('data-theme', 'dark');
-        document.querySelectorAll('.theme-btn').forEach(b => b.textContent = '☀️');
+        document.querySelectorAll('.theme-btn').forEach(b => b.innerHTML = sun);
     } else {
         document.documentElement.removeAttribute('data-theme');
-        document.querySelectorAll('.theme-btn').forEach(b => b.textContent = '🌙');
+        document.querySelectorAll('.theme-btn').forEach(b => b.innerHTML = moon);
     }
     localStorage.setItem('theme', darkTheme ? 'dark' : 'light');
 }
