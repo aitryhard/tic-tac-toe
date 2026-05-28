@@ -115,7 +115,7 @@ fn check_winner(board: &[Option<char>; 9]) -> Option<(char, Vec<usize>)> {
 fn minimax(board: &[Option<char>; 9], ai_player: char) -> Option<usize> {
     let opponent = if ai_player == 'X' { 'O' } else { 'X' };
     let mut best_score = i32::MIN;
-    let mut best_pos = None;
+    let mut best_positions = Vec::new();
 
     for i in 0..9 {
         if board[i].is_none() {
@@ -126,12 +126,19 @@ fn minimax(board: &[Option<char>; 9], ai_player: char) -> Option<usize> {
 
             if score > best_score {
                 best_score = score;
-                best_pos = Some(i);
+                best_positions.clear();
+                best_positions.push(i);
+            } else if score == best_score {
+                best_positions.push(i);
             }
         }
     }
 
-    best_pos
+    if best_positions.is_empty() {
+        None
+    } else {
+        Some(best_positions[rand::random::<usize>() % best_positions.len()])
+    }
 }
 
 fn minimax_score(
