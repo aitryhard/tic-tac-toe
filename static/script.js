@@ -206,7 +206,7 @@ function handleMessage(msg) {
             break;
         case 'game_state':
             renderBoard(msg.state, true);
-            if (msg.state.winner) { setStatus(`${msg.state.winner} ` + t('wins')); gameActive = false; }
+            if (msg.state.winner) { setStatus(`${msg.state.winner} ` + t('wins')); gameActive = false; confetti(); }
             else if (msg.state.draw) { setStatus(t('draw')); gameActive = false; }
             else {
                 const myTurn = msg.state.current_turn === player;
@@ -244,4 +244,20 @@ function leave() {
     player = null; roomCode = null; gameActive = false;
     prevBoard = Array(9).fill(null);
     cells.forEach(c => { c.className = 'cell'; });
+}
+
+function confetti() {
+    const colors = ['#22c55e', '#eab308', '#ef4444', '#3b82f6'];
+    for (let i = 0; i < 100; i++) {
+        const el = document.createElement('div');
+        el.className = 'confetti-piece';
+        el.style.left = Math.random() * 100 + '%';
+        el.style.animationDelay = Math.random() * 1.5 + 's';
+        el.style.animationDuration = 2 + Math.random() * 2.5 + 's';
+        el.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        el.style.width = (6 + Math.random() * 8) + 'px';
+        el.style.height = (6 + Math.random() * 8) + 'px';
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 4500);
+    }
 }

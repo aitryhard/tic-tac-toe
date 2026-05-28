@@ -82,7 +82,15 @@ impl Game {
             return None;
         }
         let player = self.current_turn;
-        let pos = minimax(&self.board, player);
+
+        let pos = if rand::random::<f64>() < 0.35 {
+            let empty: Vec<usize> = (0..9).filter(|i| self.board[*i].is_none()).collect();
+            if empty.is_empty() { return None; }
+            Some(empty[rand::random::<usize>() % empty.len()])
+        } else {
+            minimax(&self.board, player)
+        };
+
         if let Some(p) = pos {
             self.make_move(p, player).ok();
         }

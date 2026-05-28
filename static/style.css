@@ -416,3 +416,19 @@ button.danger:active { opacity: 0.9; }
     100% { opacity: 1; }
 }
 #menu { animation: fadeSlide 0.4s ease-out; }
+
+/* confetti */
+.confetti-piece {
+    position: fixed;
+    top: -12px;
+    width: 8px;
+    height: 8px;
+    border-radius: 1px;
+    z-index: 9999;
+    pointer-events: none;
+    animation: confettiFall linear forwards;
+}
+@keyframes confettiFall {
+    0% { transform: translateY(0) rotateZ(0deg); opacity: 1; }
+    100% { transform: translateY(105vh) rotateZ(600deg); opacity: 0; }
+}
