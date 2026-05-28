@@ -150,6 +150,18 @@ button.danger:active { opacity: 0.9; }
 
 .theme-btn.spin { animation: themeSpin 0.5s ease-out forwards; }
 
+.lang-btn {
+    font-size: 0.7rem; font-weight: 700;
+    padding: 4px 7px; border-radius: 4px;
+    background: transparent; border: 1px solid var(--border);
+    color: var(--text-muted); cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+    line-height: 1;
+}
+.lang-btn:hover { color: var(--blue); border-color: var(--blue); }
+
+.menu-utils { display: flex; gap: 6px; margin-top: 8px; }
+
 @keyframes themeSpin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
@@ -172,7 +184,7 @@ button.danger:active { opacity: 0.9; }
 #menu button.primary { width: 200px; padding: 10px 20px; }
 #menu button.primary:hover, #menu button.primary.btn-hover { box-shadow: 0 4px 16px rgba(79,143,247,0.4); transform: translateY(-2px); }
 #menu button.primary:active, #menu button.primary.btn-active { box-shadow: 0 1px 4px rgba(79,143,247,0.2); transform: translateY(0); }
-#menu .theme-btn { margin-top: 4px; }
+#menu .theme-btn { }
 
 #join-section { display: flex; gap: 6px; margin-top: 8px; width: 200px; }
 #join-section button.primary {

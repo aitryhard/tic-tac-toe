@@ -1,3 +1,92 @@
+const L = {
+    en: {
+        title: 'Tic Tac Toe',
+        vsPlayer: 'Create Room (vs Player)',
+        vsAI: 'Play vs AI',
+        roomCode: 'Room code',
+        join: 'Join',
+        copied: 'Copied!',
+        copyTitle: 'Copy room code',
+        restart: 'Restart',
+        leave: 'Leave',
+        yourTurn: 'Your turn',
+        aiThinking: 'AI thinking...',
+        waiting: 'Waiting for opponent...',
+        spectating: 'Spectating...',
+        wins: 'wins!',
+        draw: 'Draw!',
+        disconnected: 'Disconnected',
+        connError: 'Connection error',
+        failRoom: 'Failed to create room',
+        turn: "'s turn",
+        errPrefix: 'Error: ',
+        empty: 'Clipboard is empty',
+        copyHint: 'Copy something to get started!',
+    },
+    ru: {
+        title: 'Крестики Нолики',
+        vsPlayer: 'Комната (vs Игрок)',
+        vsAI: 'Играть с ИИ',
+        roomCode: 'Код комнаты',
+        join: 'Войти',
+        copied: 'Скопировано!',
+        copyTitle: 'Копировать код',
+        restart: 'Заново',
+        leave: 'Выйти',
+        yourTurn: 'Ваш ход',
+        aiThinking: 'ИИ думает...',
+        waiting: 'Ожидание соперника...',
+        spectating: 'Наблюдение...',
+        wins: 'победил!',
+        draw: 'Ничья!',
+        disconnected: 'Отключено',
+        connError: 'Ошибка соединения',
+        failRoom: 'Ошибка создания комнаты',
+        turn: ' ходит',
+        errPrefix: 'Ошибка: ',
+        empty: 'Буфер обмена пуст',
+        copyHint: 'Скопируйте что-нибудь!',
+    }
+};
+
+let lang = localStorage.getItem('lang') === 'ru' ? 'ru' : 'en';
+function t(key) { return L[lang][key] || key; }
+
+function setTitle() {
+    const title = document.getElementById('title');
+    const text = t('title');
+    title.innerHTML = '';
+    const words = text.split(' ');
+    words.forEach((word, wi) => {
+        word.split('').forEach((ch, ci) => {
+            const span = document.createElement('span');
+            span.textContent = ch;
+            const delay = (wi === 0 ? ci : 3 + wi + ci) * 0.05;
+            span.style.animationDelay = delay + 's';
+            title.appendChild(span);
+        });
+        if (wi < words.length - 1) {
+            const s = document.createElement('span');
+            s.className = 'space';
+            title.appendChild(s);
+        }
+    });
+}
+
+function applyLang() {
+    localStorage.setItem('lang', lang);
+    setTitle();
+    document.querySelectorAll('.lang-btn').forEach(b => b.textContent = lang.toUpperCase());
+    document.getElementById('btn-vs-player').textContent = t('vsPlayer');
+    document.getElementById('btn-vs-ai').textContent = t('vsAI');
+    document.getElementById('room-code-input').placeholder = t('roomCode');
+    document.getElementById('btn-join').textContent = t('join');
+    document.getElementById('copy-btn').title = t('copyTitle');
+    document.getElementById('copy-toast').textContent = t('copied');
+    document.getElementById('btn-restart').textContent = t('restart');
+    document.getElementById('btn-leave').textContent = t('leave');
+}
+
 let ws = null;
 let player = null;
 let roomCode = null;
@@ -10,6 +99,9 @@ const menu = document.getElementById('menu');
 const gameDiv = document.getElementById('game');
 const cells = document.querySelectorAll('.cell');
 const statusEl = document.getElementById('status');
+const roomCodeText = document.getElementById('room-code-text');
+const copyBtn = document.getElementById('copy-btn');
+const copyToast = document.getElementById('copy-toast');
 
 function setStatus(text) {
     statusEl.classList.remove('pop');
@@ -17,10 +109,6 @@ function setStatus(text) {
     statusEl.textContent = text;
     statusEl.classList.add('pop');
 }
-
-const roomCodeText = document.getElementById('room-code-text');
-const copyBtn = document.getElementById('copy-btn');
-const copyToast = document.getElementById('copy-toast');
 
 copyBtn.onclick = async () => {
     try {
@@ -41,6 +129,9 @@ document.getElementById('room-code-input').onkeydown = (e) => { if (e.key === 'E
 document.querySelectorAll('.theme-btn').forEach(btn => btn.onclick = toggleTheme);
 applyTheme();
 
+document.querySelectorAll('.lang-btn').forEach(btn => btn.onclick = toggleLang);
+applyLang();
+
 cells.forEach(cell => {
     cell.onclick = () => {
         if (!gameActive) return;
@@ -60,12 +151,15 @@ function applyTheme() {
 function toggleTheme() {
     darkTheme = !darkTheme;
     document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.add('spin'));
-    setTimeout(() => {
-        applyTheme();
-    }, 250);
+    setTimeout(() => applyTheme(), 250);
     setTimeout(() => {
         document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('spin'));
     }, 500);
+}
+
+function toggleLang() {
+    lang = lang === 'en' ? 'ru' : 'en';
+    applyLang();
 }
 
 async function createRoom(vsAi) {
@@ -77,7 +171,7 @@ async function createRoom(vsAi) {
         });
         const data = await res.json();
         if (data.code) { roomCode = data.code; vsAI = vsAi; connect(); }
-    } catch (e) { setStatus('Failed to create room'); }
+    } catch (e) { setStatus(t('failRoom')); }
 }
 
 function joinRoom() {
@@ -94,33 +188,33 @@ function connect() {
     const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
     ws = new WebSocket(`${proto}//${location.host}/ws/${roomCode}`);
     ws.onmessage = (event) => { const msg = JSON.parse(event.data); handleMessage(msg); };
-    ws.onclose = () => { setStatus('Disconnected'); gameActive = false; };
-    ws.onerror = () => { setStatus('Connection error'); };
+    ws.onclose = () => { setStatus(t('disconnected')); gameActive = false; };
+    ws.onerror = () => { setStatus(t('connError')); };
 }
 
 function handleMessage(msg) {
     switch (msg.type) {
         case 'joined':
             player = msg.player; vsAI = msg.vs_ai;
-            setStatus(player === 'spectator' ? 'Spectating...' : 'Waiting for opponent...');
+            setStatus(player === 'spectator' ? t('spectating') : t('waiting'));
             break;
         case 'game_start':
             prevBoard = [...msg.state.board];
             renderBoard(msg.state, false);
             gameActive = !vsAI || player === 'X';
-            setStatus(vsAI ? (player === 'X' ? 'Your turn' : 'AI thinking...') : "X's turn");
+            setStatus(vsAI ? (player === 'X' ? t('yourTurn') : t('aiThinking')) : 'X' + t('turn'));
             break;
         case 'game_state':
             renderBoard(msg.state, true);
-            if (msg.state.winner) { setStatus(`${msg.state.winner} wins!`); gameActive = false; }
-            else if (msg.state.draw) { setStatus('Draw!'); gameActive = false; }
+            if (msg.state.winner) { setStatus(`${msg.state.winner} ` + t('wins')); gameActive = false; }
+            else if (msg.state.draw) { setStatus(t('draw')); gameActive = false; }
             else {
                 const myTurn = msg.state.current_turn === player;
                 gameActive = vsAI ? (myTurn && player !== 'spectator') : player !== 'spectator';
-                setStatus(vsAI ? (myTurn ? 'Your turn' : 'AI thinking...') : `${msg.state.current_turn}'s turn`);
+                setStatus(vsAI ? (myTurn ? t('yourTurn') : t('aiThinking')) : msg.state.current_turn + t('turn'));
             }
             break;
-        case 'error': setStatus('Error: ' + msg.message); break;
+        case 'error': setStatus(t('errPrefix') + msg.message); break;
     }
 }
 
