@@ -101,30 +101,6 @@ function drawSound(duration, vol = 0.03) {
     gain.connect(ctx.destination);
     src.start();
 }
-    }
-    // Apply overall stroke envelope
-    for (let i = 0; i < len; i++) {
-        const env = Math.min(i / (len * 0.02), 1, (len - i) / (len * 0.1));
-        data[i] *= env;
-    }
-    const src = ctx.createBufferSource();
-    src.buffer = buf;
-    const gain = ctx.createGain();
-    gain.gain.value = vol;
-    const hp = ctx.createBiquadFilter();
-    hp.type = 'highpass';
-    hp.frequency.value = 3500;
-    const peak = ctx.createBiquadFilter();
-    peak.type = 'peaking';
-    peak.frequency.value = 6000;
-    peak.Q.value = 1.5;
-    peak.gain.value = 8;
-    src.connect(hp);
-    hp.connect(peak);
-    peak.connect(gain);
-    gain.connect(ctx.destination);
-    src.start();
-}
 
 function soundX() { drawSound(0.06, 0.03); setTimeout(() => drawSound(0.06, 0.03), 300); }
 function soundO() { drawSound(0.28, 0.035); }
