@@ -130,12 +130,12 @@ button {
     background: var(--cell-bg);
     color: var(--text);
     font-weight: 500;
-    transition: all 0.12s;
+    transition: all 0.15s;
     user-select: none;
     box-shadow: 0 1px 3px rgba(0,0,0,0.06);
 }
-button:hover { background: var(--cell-hover); border-color: var(--text-muted); box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
-button:active { background: var(--border-light); box-shadow: 0 1px 2px rgba(0,0,0,0.04); transform: translateY(1px); }
+button:hover { transform: scale(1.04); }
+button:active { transform: scale(0.97); }
 
 button.primary {
     background: var(--blue);
@@ -144,7 +144,7 @@ button.primary {
     box-shadow: 0 2px 8px rgba(79,143,247,0.25);
 }
 button.primary:hover { background: var(--blue-hover); border-color: var(--blue-hover); box-shadow: 0 4px 12px rgba(79,143,247,0.3); }
-button.primary:active { opacity: 0.9; box-shadow: 0 1px 4px rgba(79,143,247,0.2); transform: translateY(1px); }
+button.primary:active { opacity: 0.9; box-shadow: 0 1px 4px rgba(79,143,247,0.2); }
 
 button.danger {
     background: var(--red);
@@ -153,15 +153,9 @@ button.danger {
 }
 button.danger:hover { background: var(--red-hover); border-color: var(--red-hover); }
 
-.theme-btn {
-    font-size: 1.1rem;
-    padding: 6px 10px;
-    line-height: 1;
-    border-radius: 6px;
-    background: transparent;
-    border-color: transparent;
-}
-.theme-btn:hover { background: var(--cell-hover); border-color: var(--border); }
+.theme-btn { font-size: 1.1rem; padding: 6px 10px; line-height: 1; border-radius: 6px; background: transparent; border-color: transparent; }
+.theme-btn:hover { transform: none; }
+.theme-btn:active { transform: none; }
 
 #menu {
     display: flex;
@@ -251,6 +245,15 @@ button.danger:hover { background: var(--red-hover); border-color: var(--red-hove
     color: var(--text-secondary);
     white-space: nowrap;
     pointer-events: none;
+    transition: opacity 0.15s;
+}
+#status.pop {
+    animation: statusPop 0.3s ease-out;
+}
+
+@keyframes statusPop {
+    0% { opacity: 0; transform: translateX(-50%) scale(0.9); }
+    100% { opacity: 1; transform: translateX(-50%) scale(1); }
 }
 
 #board {

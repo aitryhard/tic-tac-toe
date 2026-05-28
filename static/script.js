@@ -12,6 +12,13 @@ const cells = document.querySelectorAll('.cell');
 const statusEl = document.getElementById('status');
 const roomLabel = document.getElementById('room-label');
 
+function setStatus(text) {
+    statusEl.classList.remove('pop');
+    void statusEl.offsetHeight;
+    statusEl.textContent = text;
+    statusEl.classList.add('pop');
+}
+
 document.getElementById('btn-vs-player').onclick = () => createRoom(false);
 document.getElementById('btn-vs-ai').onclick = () => createRoom(true);
 document.getElementById('btn-join').onclick = joinRoom;
@@ -20,7 +27,6 @@ document.getElementById('btn-leave').onclick = leave;
 document.getElementById('room-code-input').onkeydown = (e) => { if (e.key === 'Enter') joinRoom(); };
 
 document.querySelectorAll('.theme-btn').forEach(btn => btn.onclick = toggleTheme);
-
 applyTheme();
 
 cells.forEach(cell => {
@@ -41,10 +47,7 @@ function applyTheme() {
     localStorage.setItem('theme', darkTheme ? 'dark' : 'light');
 }
 
-function toggleTheme() {
-    darkTheme = !darkTheme;
-    applyTheme();
-}
+function toggleTheme() { darkTheme = !darkTheme; applyTheme(); }
 
 async function createRoom(vsAi) {
     try {
@@ -59,17 +62,13 @@ async function createRoom(vsAi) {
             vsAI = vsAi;
             connect();
         }
-    } catch (e) {
-        statusEl.textContent = 'Failed to create room';
-    }
+    } catch (e) { setStatus('Failed to create room'); }
 }
 
 function joinRoom() {
     const code = document.getElementById('room-code-input').value.trim().toUpperCase();
     if (code.length < 4) return;
-    roomCode = code;
-    vsAI = false;
-    connect();
+    roomCode = code; vsAI = false; connect();
 }
 
 function connect() {
@@ -85,43 +84,34 @@ function connect() {
         const msg = JSON.parse(event.data);
         handleMessage(msg);
     };
-    ws.onclose = () => { statusEl.textContent = 'Disconnected'; gameActive = false; };
-    ws.onerror = () => { statusEl.textContent = 'Connection error'; };
+    ws.onclose = () => { setStatus('Disconnected'); gameActive = false; };
+    ws.onerror = () => { setStatus('Connection error'); };
 }
 
 function handleMessage(msg) {
     switch (msg.type) {
         case 'joined':
-            player = msg.player;
-            vsAI = msg.vs_ai;
-            statusEl.textContent = player === 'spectator' ? 'Spectating...' : 'Waiting for opponent...';
+            player = msg.player; vsAI = msg.vs_ai;
+            setStatus(player === 'spectator' ? 'Spectating...' : 'Waiting for opponent...');
             break;
         case 'game_start':
             prevBoard = [...msg.state.board];
             renderBoard(msg.state, false);
             gameActive = !vsAI || player === 'X';
-            statusEl.textContent = vsAI
-                ? (player === 'X' ? 'Your turn' : 'AI thinking...')
-                : "X's turn";
+            setStatus(vsAI ? (player === 'X' ? 'Your turn' : 'AI thinking...') : "X's turn");
             break;
         case 'game_state':
             renderBoard(msg.state, true);
-            if (msg.state.winner) {
-                statusEl.textContent = `${msg.state.winner} wins!`;
-                gameActive = false;
-            } else if (msg.state.draw) {
-                statusEl.textContent = 'Draw!';
-                gameActive = false;
-            } else {
+            if (msg.state.winner) { setStatus(`${msg.state.winner} wins!`); gameActive = false; }
+            else if (msg.state.draw) { setStatus('Draw!'); gameActive = false; }
+            else {
                 const myTurn = msg.state.current_turn === player;
                 gameActive = vsAI ? (myTurn && player !== 'spectator') : player !== 'spectator';
-                statusEl.textContent = vsAI
-                    ? (myTurn ? 'Your turn' : 'AI thinking...')
-                    : `${msg.state.current_turn}'s turn`;
+                setStatus(vsAI ? (myTurn ? 'Your turn' : 'AI thinking...') : `${msg.state.current_turn}'s turn`);
             }
             break;
         case 'error':
-            statusEl.textContent = 'Error: ' + msg.message;
+            setStatus('Error: ' + msg.message);
             break;
     }
 }
@@ -130,40 +120,27 @@ function renderBoard(state, animate) {
     state.board.forEach((val, i) => {
         const cell = cells[i];
         if (val === prevBoard[i]) return;
-
         cell.classList.remove('x', 'o', 'anim', 'win');
         if (val) {
             cell.classList.add('taken');
-            if (animate) {
-                cell.classList.add(val.toLowerCase(), 'anim');
-            } else {
-                cell.classList.add(val.toLowerCase());
-            }
-        } else {
-            cell.classList.remove('taken');
-        }
+            cell.classList.add(val.toLowerCase());
+            if (animate) cell.classList.add('anim');
+        } else { cell.classList.remove('taken'); }
     });
-
     prevBoard = [...state.board];
-
     if (state.win_line && state.win_line.length > 0) {
         state.win_line.forEach(i => cells[i].classList.add('win'));
     }
 }
 
-function send(data) {
-    if (ws && ws.readyState === WebSocket.OPEN) ws.send(JSON.stringify(data));
-}
-
+function send(data) { if (ws && ws.readyState === WebSocket.OPEN) ws.send(JSON.stringify(data)); }
 function closeWs() { if (ws) { ws.close(); ws = null; } }
 
 function leave() {
     closeWs();
     gameDiv.style.display = 'none';
     menu.style.display = 'flex';
-    player = null;
-    roomCode = null;
-    gameActive = false;
+    player = null; roomCode = null; gameActive = false;
     prevBoard = Array(9).fill(null);
     cells.forEach(c => { c.className = 'cell'; });
 }
