@@ -216,8 +216,9 @@ button.danger:hover { background: var(--red-hover); border-color: var(--red-hove
 .mark line, .mark circle {
     fill: none;
     stroke-width: 11;
-    stroke-linecap: round;
 }
+.mark line { stroke-linecap: butt; }
+.mark circle { stroke-linecap: round; }
 
 .mark.x line { stroke: var(--blue); }
 .mark.o circle { stroke: var(--red); }
