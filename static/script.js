@@ -52,6 +52,36 @@ const L = {
 let lang = localStorage.getItem('lang') === 'ru' ? 'ru' : 'en';
 function t(key) { return L[lang][key] || key; }
 
+// === Sound system (Web Audio API) ===
+let audioCtx = null;
+function getAudio() { if (!audioCtx) audioCtx = new AudioContext(); return audioCtx; }
+
+function beep(freq, duration, type = 'sine', vol = 0.08) {
+    const ctx = getAudio();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = type;
+    osc.frequency.value = freq;
+    gain.gain.setValueAtTime(vol, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + duration);
+}
+
+function soundX() { beep(880, 0.06, 'square', 0.06); }
+function soundO() { beep(660, 0.07, 'triangle', 0.06); }
+function soundWin() {
+    beep(660, 0.1, 'sine', 0.08);
+    setTimeout(() => beep(880, 0.1, 'sine', 0.08), 100);
+    setTimeout(() => beep(1100, 0.2, 'sine', 0.1), 200);
+}
+function soundClick() { beep(200, 0.03, 'sine', 0.03); }
+function soundCopy() { beep(1200, 0.06, 'sine', 0.04); setTimeout(() => beep(1600, 0.06, 'sine', 0.04), 60); }
+function soundDraw() { beep(440, 0.15, 'triangle', 0.06); }
+function soundLose() { beep(300, 0.15, 'sawtooth', 0.04); setTimeout(() => beep(220, 0.2, 'sawtooth', 0.04), 150); }
+
 function setTitle() {
     const title = document.getElementById('title');
     const text = t('title');
@@ -113,6 +143,7 @@ function setStatus(text) {
 copyBtn.onclick = async () => {
     try {
         await navigator.clipboard.writeText(roomCode);
+        soundCopy();
         copyToast.classList.remove('show');
         void copyToast.offsetHeight;
         copyToast.classList.add('show');
@@ -139,6 +170,10 @@ cells.forEach(cell => {
     };
 });
 
+document.addEventListener('click', e => {
+    if (e.target.closest('button')) soundClick();
+});
+
 function applyTheme() {
     if (darkTheme) {
         document.documentElement.setAttribute('data-theme', 'dark');
@@ -149,6 +184,7 @@ function applyTheme() {
 }
 
 function toggleTheme() {
+    soundClick();
     darkTheme = !darkTheme;
     document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.add('spin'));
     setTimeout(() => applyTheme(), 250);
@@ -158,6 +194,7 @@ function toggleTheme() {
 }
 
 function toggleLang() {
+    soundClick();
     lang = lang === 'en' ? 'ru' : 'en';
     applyLang();
 }
@@ -208,9 +245,10 @@ function handleMessage(msg) {
             renderBoard(msg.state, true);
             if (msg.state.winner) {
                 setStatus(`${msg.state.winner} ` + t('wins')); gameActive = false;
-                if (msg.state.winner === player) confetti();
+                if (msg.state.winner === player) { confetti(); soundWin(); }
+                else { soundLose(); }
             }
-            else if (msg.state.draw) { setStatus(t('draw')); gameActive = false; }
+            else if (msg.state.draw) { setStatus(t('draw')); gameActive = false; soundDraw(); }
             else {
                 const myTurn = msg.state.current_turn === player;
                 gameActive = vsAI ? (myTurn && player !== 'spectator') : player !== 'spectator';
@@ -228,7 +266,10 @@ function renderBoard(state, animate) {
         cell.classList.remove('x', 'o', 'anim', 'win');
         if (val) {
             cell.classList.add('taken', val.toLowerCase());
-            if (animate) cell.classList.add('anim');
+            if (animate) {
+                cell.classList.add('anim');
+                if (val === 'X') soundX(); else soundO();
+            }
         } else { cell.classList.remove('taken'); }
     });
     prevBoard = [...state.board];
