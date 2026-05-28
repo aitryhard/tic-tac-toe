@@ -63,7 +63,14 @@ body {
     padding: 24px;
 }
 
-h1 { font-size: 1.75rem; font-weight: 700; color: var(--text); letter-spacing: -0.5px; }
+h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -1px;
+    margin-bottom: 8px;
+    animation: fadeSlide 0.5s ease-out;
+}
 
 button {
     font-size: 0.875rem;
@@ -76,17 +83,19 @@ button {
     font-weight: 500;
     transition: all 0.12s;
     user-select: none;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
 }
-button:hover { background: var(--cell-hover); border-color: var(--text-muted); }
-button:active { background: var(--border-light); }
+button:hover { background: var(--cell-hover); border-color: var(--text-muted); box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+button:active { background: var(--border-light); box-shadow: 0 1px 2px rgba(0,0,0,0.04); transform: translateY(1px); }
 
 button.primary {
     background: var(--blue);
     color: #ffffff;
     border-color: var(--blue);
+    box-shadow: 0 2px 8px rgba(79,143,247,0.25);
 }
-button.primary:hover { background: var(--blue-hover); border-color: var(--blue-hover); }
-button.primary:active { opacity: 0.9; }
+button.primary:hover { background: var(--blue-hover); border-color: var(--blue-hover); box-shadow: 0 4px 12px rgba(79,143,247,0.3); }
+button.primary:active { opacity: 0.9; box-shadow: 0 1px 4px rgba(79,143,247,0.2); transform: translateY(1px); }
 
 button.danger {
     background: var(--red);
@@ -240,3 +249,16 @@ button.danger:hover { background: var(--red-hover); border-color: var(--red-hove
 .cell.win:hover { background: var(--win-bg); }
 .cell.win .mark.x line { stroke: var(--green); }
 .cell.win .mark.o circle { stroke: var(--green); }
+
+/* menu animation */
+@keyframes fadeSlide {
+    0% { opacity: 0; transform: translateY(-12px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+#menu { animation: fadeSlide 0.4s ease-out; }
+#menu > * { animation: fadeSlide 0.4s ease-out both; }
+#menu > *:nth-child(1) { animation-delay: 0.02s; }
+#menu > *:nth-child(2) { animation-delay: 0.06s; }
+#menu > *:nth-child(3) { animation-delay: 0.10s; }
+#menu > *:nth-child(4) { animation-delay: 0.14s; }
+#menu > *:nth-child(5) { animation-delay: 0.18s; }
