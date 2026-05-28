@@ -126,14 +126,10 @@ button.danger {
 }
 button.danger:active { opacity: 0.9; }
 
-.theme-btn { font-size: 1.1rem; padding: 6px 10px; line-height: 1; border-radius: 6px; background: transparent; border-color: transparent; transition: none; box-shadow: none; transform: none; }
-.theme-btn:hover { box-shadow: none; transform: none; }
+.theme-btn { font-size: 0.85rem; padding: 5px 9px; line-height: 1; border-radius: 6px; background: transparent; border-color: transparent; box-shadow: none; font-weight: 700; color: var(--text-muted); }
+.theme-btn:hover { box-shadow: none; transform: none; color: var(--blue); }
 .theme-btn:active { box-shadow: none; transform: none; }
-.theme-btn svg { display: block; transition: transform 0.3s; }
-.theme-btn:hover svg { transform: rotate(90deg); }
-.theme-btn.btn-hover { box-shadow: none; transform: none; }
-.theme-btn.btn-hover svg { transform: rotate(90deg); }
-.theme-btn.spin svg { animation: themeSpin 0.6s ease-out forwards; }
+#menu .theme-btn.spin { animation: themeSpin 0.5s ease-out; }
 
 @keyframes themeSpin {
     0% { transform: rotate(0deg); }
@@ -368,7 +364,7 @@ button.danger:active { opacity: 0.9; }
     100% { opacity: 1; }
 }
 #menu { animation: fadeSlide 0.4s ease-out; }
-#menu > * { animation: fadeSlide 0.4s ease-out both; }
+#menu > * { animation: fadeSlide 0.4s ease-out forwards; }
 #menu > *:nth-child(1) { animation-delay: 0.02s; }
 #menu > *:nth-child(2) { animation-delay: 0.06s; }
 #menu > *:nth-child(3) { animation-delay: 0.10s; }
