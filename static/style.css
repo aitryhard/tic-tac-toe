@@ -143,19 +143,16 @@ button.primary {
     border-color: var(--blue);
     box-shadow: 0 2px 8px rgba(79,143,247,0.25);
 }
-button.primary:hover { background: var(--blue-hover); border-color: var(--blue-hover); box-shadow: 0 4px 12px rgba(79,143,247,0.3); }
-button.primary:active { opacity: 0.9; box-shadow: 0 1px 4px rgba(79,143,247,0.2); }
+button.primary:active { opacity: 0.9; }
 
 button.danger {
     background: var(--red);
     color: #ffffff;
     border-color: var(--red);
 }
-button.danger:hover { background: var(--red-hover); border-color: var(--red-hover); }
+button.danger:active { opacity: 0.9; }
 
 .theme-btn { font-size: 1.1rem; padding: 6px 10px; line-height: 1; border-radius: 6px; background: transparent; border-color: transparent; }
-.theme-btn:hover { transform: none; }
-.theme-btn:active { transform: none; }
 
 #menu {
     display: flex;
